@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  wildfly:
+    image: bitnami/wildfly:10.1.0-r35
+    container_name: wildfly10
+#    platform: linux/arm64
+    ports:
+      - "8080:8080"    # Application port
+      - "9990:9990"    # Management console port
+      - "8787:8787"    # Debugging port
+    volumes:
+      - ./jdk-unsupported-module.xml:/opt/bitnami/wildfly/modules/system/layers/base/jdk/unsupported/main/module.xml
+    environment:
+#      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n
+      - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n -Djava.net.preferIPv4Stack=true
+      - WILDFLY_USERNAME=admin       # Set admin username
+      - WILDFLY_PASSWORD=admin123    # Set admin password
+    tty: true
+
